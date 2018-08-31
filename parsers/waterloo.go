@@ -1,5 +1,4 @@
-// waterloo parsing library
-package main
+package parsers
 
 import (
 	"regexp"
@@ -8,7 +7,7 @@ import (
 )
 
 // all pages
-func getStudentID(rawText string) uint64 {
+func GetStudentID(rawText string) uint64 {
 	validStudentID := regexp.MustCompile(`[0-9]{8}`)
 	studentIDString := validStudentID.FindStringSubmatch(rawText)[0]
 	studentID, err := strconv.ParseUint(studentIDString, 10, 64)
@@ -20,7 +19,7 @@ func getStudentID(rawText string) uint64 {
 }
 
 // work term page
-func isWorkTermPage(rawText string) bool {
+func IsWorkTermPage(rawText string) bool {
 	workTermPage, err := regexp.MatchString("University of WaterlooCo-operative Work Terms", rawText)
 	if err != nil {
 		panic(err)
@@ -30,7 +29,7 @@ func isWorkTermPage(rawText string) bool {
 }
 
 // Returns a map of ratings and their count a student received.
-func getWorkTermRatings(rawText string) map[string]int {
+func GetWorkTermRatings(rawText string) map[string]int {
 	rawText = strings.TrimPrefix(rawText, "University of WaterlooCo-operative Work Terms")
 
 	validRatingOutstanding := regexp.MustCompile(`OUTSTANDING`)
@@ -52,7 +51,7 @@ func getWorkTermRatings(rawText string) map[string]int {
 }
 
 // Extract the student name from the work term page
-func getStudentName(rawText string) string {
+func GetStudentName(rawText string) string {
 	rawText = strings.TrimPrefix(rawText, "University of WaterlooCo-operative Work Terms")
 
 	validName := regexp.MustCompile(`^\D+`)
@@ -60,7 +59,7 @@ func getStudentName(rawText string) string {
 }
 
 // grade page
-func isInitialGradePage(rawText string) bool {
+func IsInitialGradePage(rawText string) bool {
 	initialGradePage, err := regexp.MatchString("UNIVERSITY OF WATERLOOUNOFFICIAL GRADE REPORT", rawText)
 	if err != nil {
 		panic(err)
@@ -69,7 +68,7 @@ func isInitialGradePage(rawText string) bool {
 	return initialGradePage
 }
 
-func getGradePageCount(rawText string) int64 {
+func GetGradePageCount(rawText string) int64 {
 	validLastPageCount := regexp.MustCompile(`[0-9]+$`)
 	pageCountString := validLastPageCount.FindStringSubmatch(rawText)[0]
 	pageCount, err := strconv.ParseInt(pageCountString, 10, 64)
@@ -80,7 +79,7 @@ func getGradePageCount(rawText string) int64 {
 	return pageCount
 }
 
-func getStudentAverage(rawText string) int {
+func GetStudentAverage(rawText string) int {
 	validTermAverages := regexp.MustCompile(`Term Average:Decision:([0-9]{2})`)
 	termAverages := validTermAverages.FindAllStringSubmatch(rawText, -1)
 	averageTotal := 0

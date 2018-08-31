@@ -1,37 +1,15 @@
-package main
-
-import (
-	"encoding/csv"
-	"fmt"
-	"os"
-	"strconv"
-	"text/tabwriter"
-)
-
-// Take a map of students and pretty print to terminal
-func prettyPrint(students map[uint64]Student) {
-	w := tabwriter.NewWriter(os.Stdout, 0, 0, 0, '-', tabwriter.AlignRight|tabwriter.Debug)
-	fmt.Fprintln(w, "ID\t", "Name\t", "Grade Average\t", "Outstandings\t", "Excellent\t", "Very Good\t", "Good\t", "Satisfactory\t", "Unsatisfactory\t", "Work Terms")
-	for _, student := range students {
-
-		fmt.Fprintln(w,
-			student.ID, "\t",
-			student.Name, "\t",
-			student.GradeAverage, "\t",
-			student.RatingOutstanding, "\t",
-			student.RatingExcellent, "\t",
-			student.RatingVeryGood, "\t",
-			student.RatingGood, "\t",
-			student.RatingSatisfactory, "\t",
-			student.RatingUnsatisfactory, "\t",
-			countWorkTerms(student), "\t",
-		)
-	}
-	w.Flush()
-}
+package printers
 
 // Take a map of students and export all the data to csv
-func printToCSV(students map[uint64]Student) {
+import (
+	"encoding/csv"
+	"os"
+	"strconv"
+
+	"github.com/waterloo-parser/models"
+)
+
+func CSV(students map[uint64]models.Student) {
 	data := [][]string{}
 
 	data = append(data, []string{"ID", "Name", "Grade Average", "Outstandings", "Excellent", "Very Good", "Good", "Satisfactory", "Unsatisfactory", "Work Terms"})
@@ -70,6 +48,6 @@ func csvExport(data [][]string, filename string) {
 	}
 }
 
-func countWorkTerms(student Student) int {
+func countWorkTerms(student models.Student) int {
 	return student.RatingOutstanding + student.RatingExcellent + student.RatingVeryGood + student.RatingGood + student.RatingUnsatisfactory
 }
