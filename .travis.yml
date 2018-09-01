@@ -1,0 +1,9 @@
+language: go
+
+go_import_path: 'github.com/aschiopu/waterloo-parser'
+
+go:
+  - "1.x"
+
+script:
+  - go test -v ./...

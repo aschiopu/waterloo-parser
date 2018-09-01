@@ -3,7 +3,7 @@ package printers
 import (
 	"testing"
 
-	"github.com/waterloo-parser/models"
+	"github.com/aschiopu/waterloo-parser/models"
 )
 
 var prepStudentsForCSVTests = []struct {

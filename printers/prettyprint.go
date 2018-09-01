@@ -5,7 +5,7 @@ import (
 	"os"
 	"text/tabwriter"
 
-	"github.com/waterloo-parser/models"
+	"github.com/aschiopu/waterloo-parser/models"
 )
 
 // Take a map of students and pretty print to terminal

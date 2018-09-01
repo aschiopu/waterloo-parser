@@ -6,7 +6,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/waterloo-parser/models"
+	"github.com/aschiopu/waterloo-parser/models"
 )
 
 func CSV(students map[uint64]models.Student) {

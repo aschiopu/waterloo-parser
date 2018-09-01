@@ -3,13 +3,11 @@ package main
 import (
 	"flag"
 
+	"github.com/aschiopu/waterloo-parser/models"
+	"github.com/aschiopu/waterloo-parser/parsers"
+	"github.com/aschiopu/waterloo-parser/printers"
 	"github.com/ledongthuc/pdf"
-	"github.com/waterloo-parser/models"
-	"github.com/waterloo-parser/parsers"
-	"github.com/waterloo-parser/printers"
 )
-
-// TODO: add tests
 
 func main() {
 
