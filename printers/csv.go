@@ -10,6 +10,11 @@ import (
 )
 
 func CSV(students map[uint64]models.Student) {
+	data := prepStudentsForCSV(students)
+	csvExport(data, "results.csv")
+}
+
+func prepStudentsForCSV(students map[uint64]models.Student) [][]string {
 	data := [][]string{}
 
 	data = append(data, []string{"ID", "Name", "Grade Average", "Outstandings", "Excellent", "Very Good", "Good", "Satisfactory", "Unsatisfactory", "Work Terms"})
@@ -29,8 +34,7 @@ func CSV(students map[uint64]models.Student) {
 			strconv.Itoa(countWorkTerms(student)),
 		})
 	}
-
-	csvExport(data, "results.csv")
+	return data
 }
 
 // Take in a nested array of data and write to csv file

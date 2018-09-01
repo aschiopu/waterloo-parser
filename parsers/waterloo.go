@@ -1,21 +1,25 @@
 package parsers
 
 import (
+	"errors"
 	"regexp"
 	"strconv"
 	"strings"
 )
 
 // all pages
-func GetStudentID(rawText string) uint64 {
+func GetStudentID(rawText string) (uint64, error) {
 	validStudentID := regexp.MustCompile(`[0-9]{8}`)
-	studentIDString := validStudentID.FindStringSubmatch(rawText)[0]
-	studentID, err := strconv.ParseUint(studentIDString, 10, 64)
+	studentIDString := validStudentID.FindStringSubmatch(rawText)
+	if len(studentIDString) == 0 {
+		return 0, errors.New("No student id found")
+	}
+	studentID, err := strconv.ParseUint(studentIDString[0], 10, 64)
 	if err != nil {
 		panic(err)
 	}
 
-	return studentID
+	return studentID, nil
 }
 
 // work term page
@@ -68,15 +72,18 @@ func IsInitialGradePage(rawText string) bool {
 	return initialGradePage
 }
 
-func GetGradePageCount(rawText string) int64 {
+func GetGradePageCount(rawText string) (int64, error) {
 	validLastPageCount := regexp.MustCompile(`[0-9]+$`)
-	pageCountString := validLastPageCount.FindStringSubmatch(rawText)[0]
-	pageCount, err := strconv.ParseInt(pageCountString, 10, 64)
+	pageCountString := validLastPageCount.FindStringSubmatch(rawText)
+	if len(pageCountString) == 0 {
+		return 0, errors.New("Couldn't find page number")
+	}
+	pageCount, err := strconv.ParseInt(pageCountString[0], 10, 64)
 	if err != nil {
 		panic(err)
 	}
 
-	return pageCount
+	return pageCount, nil
 }
 
 func GetStudentAverage(rawText string) int {

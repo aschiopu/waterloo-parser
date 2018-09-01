@@ -13,8 +13,8 @@ import (
 
 func main() {
 
-	exportPointer := flag.Bool("export", false, "a bool")
-	filePointer := flag.String("file", "samples/test1.pdf", "file")
+	exportPointer := flag.Bool("export", false, "export to csv")
+	filePointer := flag.String("file", "samples/test1.pdf", "filepath to parse")
 
 	flag.Parse()
 	students := processPDF(*filePointer) // Read local pdf file
@@ -49,7 +49,10 @@ func processPDF(path string) map[uint64]models.Student {
 		}
 
 		if parsers.IsInitialGradePage(rawText) {
-			pageCount := parsers.GetGradePageCount(rawText)
+			pageCount, err := parsers.GetGradePageCount(rawText)
+			if err != nil {
+				panic(err)
+			}
 			gradeText := rawText
 
 			if pageCount > 1 {
@@ -75,17 +78,25 @@ func prccessStudentUpdate(student models.Student, students map[uint64]models.Stu
 }
 
 func updateStudentGrade(rawText string, ch chan models.Student) {
+	studentID, err := parsers.GetStudentID(rawText)
+	if err != nil {
+		panic(err)
+	}
 	ch <- models.Student{
-		ID:           parsers.GetStudentID(rawText),
+		ID:           studentID,
 		GradeAverage: parsers.GetStudentAverage(rawText),
 	}
 }
 
 func updateStudentWorkTerms(rawText string, ch chan models.Student) {
 	ratings := parsers.GetWorkTermRatings(rawText)
+	studentID, err := parsers.GetStudentID(rawText)
+	if err != nil {
+		panic(err)
+	}
 
 	ch <- models.Student{
-		ID:                   parsers.GetStudentID(rawText),
+		ID:                   studentID,
 		Name:                 parsers.GetStudentName(rawText),
 		RatingOutstanding:    ratings["outstanding"],
 		RatingExcellent:      ratings["excellent"],
