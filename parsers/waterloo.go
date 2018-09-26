@@ -2,6 +2,7 @@ package parsers
 
 import (
 	"errors"
+	"math"
 	"regexp"
 	"strconv"
 	"strings"
@@ -89,6 +90,7 @@ func GetGradePageCount(rawText string) (int64, error) {
 func GetStudentAverage(rawText string) int {
 	validTermAverages := regexp.MustCompile(`Term Average:Decision:([0-9]{2})`)
 	termAverages := validTermAverages.FindAllStringSubmatch(rawText, -1)
+	numOfTerms := math.Max(float64(len(termAverages)), 1)
 	averageTotal := 0
 
 	for _, num := range termAverages {
@@ -98,5 +100,5 @@ func GetStudentAverage(rawText string) int {
 		averageTotal = averageTotal + int(numInt)
 	}
 
-	return averageTotal / len(termAverages)
+	return int(float64(averageTotal) / numOfTerms)
 }
